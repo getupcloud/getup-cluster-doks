@@ -18,8 +18,8 @@ OUTPUT_OVERLAY_JSON := .overlay.output.json
 TFVARS_OVERLAY_JSON := .overlay.tfvars.json
 ROOT_DIR            := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
-UPSTREAM_CLUSTER_DIR  ?= ../getup-cluster-eks/
-UPSTREAM_EXAMPLES_DIR ?= ../getup-modules/examples
+UPSTREAM_CLUSTER_DIR  ?= ../getup-cluster-doks/
+UPSTREAM_EXAMPLES_DIR ?= ../getup-modules/examples/doks
 UPDATE_CLUSTER_FILES  := Makefile bin cluster/base/* providers.tf main-*.tf variables-*.tf outputs-*.tf terraform-*.auto.tfvars.example
 UPDATE_EXAMPLES       := */*.tf */*.example versions.tf
 
@@ -28,10 +28,6 @@ ifeq ($(AUTO_LOCAL_IP),true)
 endif
 
 -include .env
-
-# TODO: Ler grupo usando terraform e injetar no configmap/aws-auth
-# AWS_AUTH_GROUP_NAME := Infra
-# AWS_AUTH_USER_ARNS ?= $(shell aws iam get-group --group-name $(AWS_AUTH_GROUP_NAME) | jq -cr '[.Users[].Arn]')
 
 .ONESHELL:
 .EXPORT_ALL_VARIABLES:
@@ -92,10 +88,10 @@ apply:
 destroy-cluster-resources:
 	python bin/destroy-cluster-resources
 
-destroy-eks:
+destroy-cluster:
 	$(TERRAFORM) destroy $(TERRAFORM_ARGS) $(TERRAFORM_DESTROY_ARGS)
 
-destroy: destroy-cluster-resources destroy-eks
+destroy: destroy-cluster-resources destroy-cluster
 	@echo 'Use "$(MAKE) destroy-cluster-resources-auto-approve" to destroy without asking.'
 
 #################################################################################################
@@ -105,29 +101,24 @@ destroy-cluster-resources-auto-approve:
 	python bin/destroy-cluster-resources --confirm-delete-cluster-resources
 
 # WARNING: NO CONFIRMATION ON DESTROY
-destroy-eks-auto-approve: AWS_REGION ?= $(shell awk '/^aws_region/{print $$3}' terraform-eks.auto.tfvars | tr -d '"')
-destroy-eks-auto-approve:
-	SG_ID=$$(aws ec2 describe-security-groups --filters 'Name=tag:aws:eks:cluster-name,Values=$(CLUSTER_NAME)' --region $(AWS_REGION) \
-		| jq -r '.SecurityGroups[]|.GroupId // empty')
-	if [ -n "$$SG_ID" ]; then
-		aws ec2 delete-security-group --group-id  "$$SG_ID" --region $(AWS_REGION)
-	fi
+destroy-cluster-auto-approve: REGION ?= $(shell awk '/^region/{print $$3}' terraform-*.auto.tfvars | tr -d '"')
+destroy-cluster-auto-approve:
 	$(TERRAFORM) destroy -auto-approve $(TERRAFORM_ARGS) $(TERRAFORM_DESTROY_ARGS)
 
 # WARNING: NO CONFIRMATION ON DESTROY
-destroy-auto-approve: destroy-cluster-resources-auto-approve destroy-eks-auto-approve
+destroy-auto-approve: destroy-cluster-resources-auto-approve destroy-cluster-auto-approve
 
 #################################################################################################
 
 output:
 	$(TERRAFORM) output -json $(TERRAFORM_ARGS) $(TERRAFORM_OUTPUT_ARGS)
 
-kubeconfig: AWS_REGION ?= $(shell awk '/^aws_region/{print $$3}' terraform-eks.auto.tfvars | tr -d '"')
+kubeconfig: REGION ?= $(shell awk '/^region/{print $$3}' terraform-*.auto.tfvars | tr -d '"')
 kubeconfig:
-	aws eks update-kubeconfig --name=$(CLUSTER_NAME) $(AWS_EKS_ARGS) --region $(AWS_REGION)
+	doctl kubernetes cluster kubeconfig save
 
 update-version:
-	latest=$$(timeout 3 curl -s https://raw.githubusercontent.com/getupcloud/terraform-modules/main/version.txt || echo 0.0.0)
+	latest=$$(timeout 3 curl -s https://raw.githubusercontent.com/getupcloud/getup-modules/main/version.txt || echo 0.0.0)
 	read -e -p "New module version: " -i "$$latest" v || read -e -p "New module version: [latest=$$latest]: " v
 	sed=$$(type gsed &>/dev/null && echo gsed || echo sed)
 	$$sed -i -e '/source/s/ref=v.*"/ref=v'$$v'"/g' main-*tf
@@ -160,7 +151,7 @@ upgrade-from-local-cluster: is-tree-clean
 # used only to update upstream cluster repo, not to be meant to be used by end-users.
 #
 upgrade-from-local-examples: from ?= $(UPSTREAM_EXAMPLES_DIR)
-upgrade-from-local-examples: is-tree-clean
+upgrade-from-local-examples: #is-tree-clean
 	@shopt -s nullglob
 	echo Updating examples from $(from):
 	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %n' $(UPDATE_EXAMPLES) $(ROOT_DIR)

@@ -1,7 +1,6 @@
 ## Requirements
 
 - Terraform v1.7
-- AWS cli configured
 - kubectl
 - python3
 
@@ -10,7 +9,7 @@
 Run the command below and follow the instructions.
 
 ```
-curl -OLs https://github.com/getupcloud/terraform-cluster/raw/main/create-cluster.sh
+curl -OLs https://github.com/getupcloud/getup-cluster-doks/raw/main/create-cluster.sh
 bash ./create-cluster.sh
 ```
 

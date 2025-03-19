@@ -1,18 +1,30 @@
-# File auto-generated from ./bin/make-versions
+# File auto-generated from bin/make-versions
 
 terraform {
   required_version = "~> 1.7.0"
 
+  # Example from https://docs.digitalocean.com/products/spaces/reference/terraform-backend/
   backend "s3" {
+    endpoints = {
+      s3 = "https://-- DEFINE REGION HERE --.digitaloceanspaces.com"
+    }
+
     bucket = "-- DEFINE BUCKET NAME HERE --"
     key    = "-- DEFINE KEY PREFIX HERE --/terraform.tfstate"
-    region = "-- DEFINE BUCKET _REGION HERE --"
+
+    # Deactivate a few AWS-specific checks
+    skip_credentials_validation = true
+    skip_requesting_account_id  = true
+    skip_metadata_api_check     = true
+    skip_region_validation      = true
+    skip_s3_checksum            = true
+    region                      = "us-east-1"
   }
 
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.34"
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "~> 2.11"
     }
 
     kubernetes = {
@@ -23,26 +35,6 @@ terraform {
     helm = {
       source  = "hashicorp/helm"
       version = "~> 2.7"
-    }
-
-    kubectl = {
-      source  = "alekc/kubectl"
-      version = "~> 2.0"
-    }
-
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 3.0"
-    }
-
-    flux = {
-      source  = "fluxcd/flux"
-      version = "~> 1.2"
-    }
-
-    github = {
-      source  = "integrations/github"
-      version = "~> 5.18"
     }
   }
 }
