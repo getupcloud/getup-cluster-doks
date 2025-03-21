@@ -138,14 +138,14 @@ update-from-local-cluster: locals  = $(wildcard $(UPDATE_CLUSTER_FILES))
 update-from-local-cluster: is-tree-clean
 	@shopt -s nullglob
 	echo Updating local files only from $(from):
-	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %n' --relative $(locals) $(ROOT_DIR)
+	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %f' --relative $(locals) $(ROOT_DIR)
 
 # copy all existing files from source
 upgrade-from-local-cluster: from ?= $(UPSTREAM_CLUSTER_DIR)
 upgrade-from-local-cluster: is-tree-clean
 	@shopt -s nullglob
 	echo Updating all files from $(from):
-	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %n' --relative $(UPDATE_CLUSTER_FILES) $(ROOT_DIR)
+	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %f' --relative $(UPDATE_CLUSTER_FILES) $(ROOT_DIR)
 
 #
 # used only to update upstream cluster repo, not to be meant to be used by end-users.
@@ -154,7 +154,7 @@ upgrade-from-local-examples: from ?= $(UPSTREAM_EXAMPLES_DIR)
 upgrade-from-local-examples: #is-tree-clean
 	@shopt -s nullglob
 	echo Updating examples from $(from):
-	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %n' $(UPDATE_EXAMPLES) $(ROOT_DIR)
+	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %f' $(UPDATE_EXAMPLES) $(ROOT_DIR)
 
 show-overlay-vars:
 	@grep -wrn -A 1 --color '#output:.*' cluster/overlay 2>/dev/null

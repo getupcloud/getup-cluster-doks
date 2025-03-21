@@ -36,5 +36,25 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 2.7"
     }
+
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.34"
+    }
+
+    flux = {
+      source  = "fluxcd/flux"
+      version = "~> 1.2"
+    }
+
+    github = {
+      source  = "integrations/github"
+      version = "~> 5.18"
+    }
+
+    kubectl = {
+      source  = "alekc/kubectl"
+      version = "~> 2.0"
+    }
   }
 }
