@@ -3,8 +3,8 @@
 #### Flux #####
 ###############
 
-#variable "flux_aws_region" {
-#  description = "AWS Region."
+#variable "flux_doks_region" {
+#  description = "DOKS Region."
 #  type        = string
 #}
 
