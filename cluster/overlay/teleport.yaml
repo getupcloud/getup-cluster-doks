@@ -10,5 +10,5 @@ spec:
 
     labels:
       customer: #output:{customer_name}
-      region: #output:{aws_region}
+      region: #output:{region}
       sla: #output:{cluster_sla}

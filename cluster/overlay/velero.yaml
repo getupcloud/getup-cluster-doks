@@ -12,20 +12,20 @@ spec:
       - mountPath: /target
         name: plugins
 
-    credentials:
-      useSecret: false # required to use IRSA
-
     configuration:
+      extraEnvVars:
+        DIGITALOCEAN_TOKEN: #output:{velero_do_token}
+
       defaultBackupStorageLocation:
       - aws: default
       backupStorageLocation:
       - provider: aws
         name: default
         default: true
-        prefix: #output:velero/{cluster_name}-{aws_region}
+        prefix: #output:velero/{cluster_name}-{region}
         bucket: #output:{velero_s3_bucket_name}
         config:
-          region: #output:{aws_region}
+          region: #output:{region}
 
       defaultVolumeSnapshotLocations:
       - aws: default
@@ -34,7 +34,7 @@ spec:
         name: default
         default: true
         config:
-          region: #output:{aws_region}
+          region: #output:{region}
 
     schedules:
       volumes:
@@ -86,10 +86,3 @@ spec:
           includeClusterResources: true
 
           snapshotVolumes: false
-
-    serviceAccount:
-      server:
-        create: true
-        name: velero
-        annotations:
-          eks.amazonaws.com/role-arn: #output:{velero_iam_role_arn}

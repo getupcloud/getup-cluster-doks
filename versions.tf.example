@@ -25,11 +25,11 @@ terraform {
 
   backend "s3" {
     endpoints = {
-      s3 = "https://nyc3.digitaloceanspaces.com"
+      s3 = "https://-- DEFINE REGION HERE --.digitaloceanspaces.com"
     }
 
-    bucket            = "pontta-terraform-state"
-    key               = "production/terraform.tfstate"
+    bucket            = "-- DEFINE BUCKET NAME HERE --"
+    key               = "-- DEFINE KEY PREFIX HERE --/terraform.tfstate"
 
     # Deactivate a few AWS-specific checks
     skip_credentials_validation = true
