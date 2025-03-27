@@ -437,9 +437,7 @@ spec:
     #  enabled: true
 
     ###############################################
-    kube-state-metrics:
-      extraArgs:
-      - --metric-labels-allowlist=nodes=[eks.amazonaws.com/capacityType]
+    #kube-state-metrics:
 
     ###############################################
     #nodeExporter:
@@ -461,13 +459,3 @@ spec:
         type: RollingUpdate
         rollingUpdate:
           maxUnavailable: "20%"
-
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: eks.amazonaws.com/compute-type
-                operator: NotIn
-                values:
-                - fargate

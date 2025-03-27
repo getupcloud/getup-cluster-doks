@@ -28,7 +28,7 @@ spec:
     proxyAddr: getup.teleport.sh:443
 
     labels:
-      provider: eks
+      provider: doks
       team: operations
 
     podSecurityPolicy:

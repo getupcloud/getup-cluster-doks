@@ -28,8 +28,8 @@ terraform {
       s3 = "https://nyc3.digitaloceanspaces.com"
     }
 
-    bucket            = "pontta-terraform-state"
-    key               = "production/terraform.tfstate"
+    bucket = "pontta-terraform-state"
+    key    = "production/terraform.tfstate"
 
     # Deactivate a few AWS-specific checks
     skip_credentials_validation = true

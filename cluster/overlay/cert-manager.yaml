@@ -4,8 +4,4 @@ metadata:
   name: cert-manager
   namespace: flux-system
 spec:
-  values:
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: #output:{cert_manager_iam_role_arn}
-
+  values: {}

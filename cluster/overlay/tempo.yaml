@@ -5,13 +5,13 @@ metadata:
   namespace: flux-system
 spec:
   values:
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: #output:{tempo_iam_role_arn}
     tempo:
       storage:
         trace:
           s3:
             bucket: #output:{tempo_s3_bucket_name}
-            region: #output:{aws_region}
-            endpoint: #output:s3.dualstack.{aws_region}.amazonaws.com
+            region: #output:{region}
+            endpoint: #output:{region}.digitaloceanspaces.com
+            access_key: #output:{tempo_access_key}
+            secret_key: #output:{tempo_secret_key}
+

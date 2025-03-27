@@ -7,16 +7,13 @@ spec:
   values:
     opencost:
       customPricing:
+        provider: custom
         costModel:
-          awsSpotDataRegion: #output:{aws_region}
-          awsSpotDataBucket: #output:{opencost_spot_datafeed_bucket_name}
-          awsSpotDataPrefix: #output:{opencost_spot_datafeed_bucket_prefix}
-          projectID: #output:"{aws_account_id}"
+          description: Custom prices for DigitalOcean
+          CPU: 0.2
+          RAM: 0.5
+          storage: 0.3
       exporter:
         defaultClusterId: #output:{cluster_name}
         persistence:
           storageClass: #output:{default_storage_class_name}
-    serviceAccount:
-      name: opencost
-      annotations:
-        eks.amazonaws.com/role-arn: #output:{opencost_iam_role_arn}

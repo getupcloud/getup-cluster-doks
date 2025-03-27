@@ -11,8 +11,8 @@ CLUSTER_NAME        ?= $(shell sed -n -e 's|^[[:space:]]*cluster_name[[:space:]]
 GIT_REMOTE          ?= origin
 GIT_BRANCH          ?= main
 GIT_COMMIT_MESSAGE  ?= Auto-generated commit
-FLOW_RECONCILE      := clean-output plan apply overlay commit push
-FLOW_FULL_RECONCILE := clean-output pull init validate plan apply kubeconfig overlay commit push
+FLOW_RECONCILE      := plan apply overlay commit push
+FLOW_FULL_RECONCILE := pull init validate plan apply kubeconfig overlay commit push
 KUSTOMIZE_BUILD     := .kustomize_build.yaml
 OUTPUT_JSON         := .output.json
 OUTPUT_OVERLAY_JSON := .overlay.output.json
@@ -38,14 +38,24 @@ endif
 .EXPORT_ALL_VARIABLES:
 
 all help:
-	@echo Targets:
+	@echo Available targets
 	echo
-	printf -- "- %s\n" init validate fmt plan apply overlay output kubeconfig update-version clean clean-output destroy migrate-state
+	echo "Terraform commands"
+	echo "  init          Executes 'terraform init'"
+	echo "  validate      Executes 'terraform validate'"
+	echo "  fmt           Executes 'terraform fmt'"
+	echo "  apply         Executes 'terraform apply'"
+	echo "  validate      Executes 'terraform validate'"
 	echo
-	echo Reconcile flows:
+	echo "Git comands"
+	echo "  overlay      Updates ./clustetr/overlay using data from terraform output and tfvars"
+	echo "  commit       Executes 'git commit' using default message"
+	echo "  push         Executes 'git push'"
 	echo
-	echo '- reconcile: $(FLOW_RECONCILE)'
-	echo '- full-reconcile: $(FLOW_FULL_RECONCILE)'
+	echo "Pre-defined reconcile flows"
+	echo
+	echo "  reconcile        $(FLOW_RECONCILE)"
+	echo "  full-reconcile   $(FLOW_FULL_RECONCILE)"
 
 reconcile: $(FLOW_RECONCILE)
 
