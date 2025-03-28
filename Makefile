@@ -47,10 +47,18 @@ all help:
 	echo "  apply         Executes 'terraform apply'"
 	echo "  validate      Executes 'terraform validate'"
 	echo
-	echo "Git comands"
+	echo "Git commands"
 	echo "  overlay      Updates ./clustetr/overlay using data from terraform output and tfvars"
 	echo "  commit       Executes 'git commit' using default message"
 	echo "  push         Executes 'git push'"
+	echo
+	echo "Flux commands"
+	echo "  flux-rec-sg    Reconcile GitRepository/flux-system"
+	echo "  flux-rec-ks    Reconcile Kustomization/flux-system"
+	echo "  flux-sus-sg    Suspend GitRepository/flux-system"
+	echo "  flux-sus-ks    Suspend Kustomization/flux-system"
+	echo "  flux-res-sg    Resume GitRepository/flux-system"
+	echo "  flux-res-ks    Resume Kustomization/flux-system"
 	echo
 	echo "Pre-defined reconcile flows"
 	echo
@@ -97,6 +105,19 @@ migrate-state:
 # WARNING: NO CONFIRMATION ON APPLY
 apply:
 	$(TERRAFORM) apply -auto-approve terraform.tfplan $(TERRAFORM_ARGS) $(TERRAFORM_APPLY_ARGS)
+
+flux-rec-sg:
+	flux reconcile source git flux-system
+flux-rec-ks:
+	flux reconcile kustomization flux-system
+flux-sus-sg:
+	flux suspend source git flux-system
+flux-sus-ks:
+	flux suspend kustomization flux-system
+flux-res-sg:
+	flux resume source git flux-system
+flux-res-ks:
+	flux resume kustomization flux-system
 
 #################################################################################################
 

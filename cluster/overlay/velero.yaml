@@ -14,7 +14,7 @@ spec:
 
     configuration:
       extraEnvVars:
-        DIGITALOCEAN_TOKEN: #output:{velero_do_token}
+        DIGITALOCEAN_TOKEN: #output:{overlay["velero_do_token"]}
 
       defaultBackupStorageLocation:
       - aws: default
@@ -23,66 +23,21 @@ spec:
         name: default
         default: true
         prefix: #output:velero/{cluster_name}-{region}
-        bucket: #output:{velero_s3_bucket_name}
+        bucket: #output:{velero_bucket_name}
         config:
           region: #output:{region}
+          s3Url: #output:https://{region}.digitaloceanspaces.com
 
-      defaultVolumeSnapshotLocations:
-      - aws: default
       volumeSnapshotLocation:
-      - provider: aws
+      - provider: digitalocean.com/velero
         name: default
         default: true
         config:
           region: #output:{region}
 
-    schedules:
-      volumes:
-        schedule: '0 3 * * *'
-        template:
-          storageLocation: default
-          ttl: 168h0m0s
-
-          # Please note labelSelector can't be empty
-          # https://github.com/vmware-tanzu/velero/issues/2083
-          #labelSelector:
-          #  app: web
-
-          includedClusterScopedResources:
-          - persistentvolumes
-          - persistentvolumeclaims
-          excludedNamespaces:
-          - kube-system
-          - kube-public
-          - velero
-          - monitoring
-          - logging
-
-          snapshotVolumes: true
-          volumeSnapshotLocations:
-          - default
-
-      resources:
-        schedule: '0 */12 * * *'
-        template:
-          storageLocation: default
-          ttl: 720h0m0s
-
-          # Please note labelSelector can't be empty
-          # https://github.com/vmware-tanzu/velero/issues/2083
-          #labelSelector:
-          #  app: web
-
-          includedNamespaces:
-          - "*"
-          excludedNamespaces:
-          - kube-system
-          - kube-public
-          - monitoring
-          - velero
-          includedResources:
-          - "*"
-          #excludedResources: []
-          includeClusterResources: true
-
-          snapshotVolumes: false
+    credentials:
+      secretContents:
+        cloud: |+
+          [default]
+          aws_access_key_id=#output:{velero_access_key}
+          aws_secret_access_key=#output:{velero_secret_key}
