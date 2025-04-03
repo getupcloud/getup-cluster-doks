@@ -9,7 +9,7 @@ spec:
       storage:
         trace:
           s3:
-            bucket: #output:{tempo_s3_bucket_name}
+            bucket: #output:{tempo_bucket_name}
             region: #output:{region}
             endpoint: #output:{region}.digitaloceanspaces.com
             access_key: #output:{tempo_access_key}

@@ -5,14 +5,11 @@ metadata:
   namespace: flux-system
 spec:
   values:
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: #output:{loki_iam_role_arn}
     loki:
       storage:
         type: s3
         s3:
-          region: #output:{aws_region}
+          region: #output:{region}
         bucketNames:
-          chunks: #output:{loki_s3_bucket_name}
-          ruler: #output:{loki_s3_bucket_name}
+          chunks: #output:{loki_bucket_name}
+          ruler: #output:{loki_bucket_name}

@@ -106,7 +106,7 @@ migrate-state:
 apply:
 	$(TERRAFORM) apply -auto-approve terraform.tfplan $(TERRAFORM_ARGS) $(TERRAFORM_APPLY_ARGS)
 
-flux-rec-sg:
+flux-rec-sg fr:
 	flux reconcile source git flux-system
 flux-rec-ks:
 	flux reconcile kustomization flux-system
