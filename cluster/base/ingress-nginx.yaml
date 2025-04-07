@@ -44,7 +44,7 @@ spec:
           cpu: 100m
           memory: 256Mi
 
-      allowSnippetAnnotations: true
+      allowSnippetAnnotations: false
       enableAnnotationValidations: true
 
       admissionWebhooks:
@@ -60,7 +60,7 @@ spec:
         #default-ssl-certificate: "ingress-nginx/default-ssl-certificate" ## "<namespace>/<secret_name>"
 
       config:
-        use-proxy-protocol: "true"
+        #use-proxy-protocol: "true"
 
         # Use ewma load-balancing for high-load envs. It avoids concentrating reqs into a small set of app pods.
         # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#load-balance
