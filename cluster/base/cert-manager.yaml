@@ -15,6 +15,7 @@ spec:
   - name: monitoring
   install:
     createNamespace: true
+    crds: CreateReplace
     disableWait: false
     remediation:
       retries: -1

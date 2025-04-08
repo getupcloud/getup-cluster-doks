@@ -13,11 +13,13 @@ spec:
       version: "~> 8.7"
   install:
     createNamespace: true
+    crds: CreateReplace
     disableWait: false
     remediation:
       retries: -1
   upgrade:
     disableWait: false
+    crds: CreateReplace
     remediation:
       retries: -1
   interval: 5m
