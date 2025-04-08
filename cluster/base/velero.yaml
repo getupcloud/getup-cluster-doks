@@ -76,7 +76,7 @@ spec:
           - kube-public
           - kube-system
           - logging
-          - monitoring
+          - monitoring        # comment this line to include grafana's volumes
           - velero
 
           includedNamespaces:

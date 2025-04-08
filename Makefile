@@ -3,7 +3,9 @@
 # This is a suggestion, not a requirement.
 #
 
-FLAVOR              := doks
+include Makefile.conf
+
+# General variables
 TERRAFORM           ?= terraform
 TF_LOG_PATH         ?= terraform.log
 TF_LOG              ?= DEBUG
@@ -19,7 +21,6 @@ OUTPUT_OVERLAY_JSON := .overlay.output.json
 TFVARS_OVERLAY_JSON := .overlay.tfvars.json
 ROOT_DIR            := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
-KUBECONFIG_RETRIEVE_COMMAND ?= doctl kubernetes cluster kubeconfig save $(CLUSTER_NAME)
 
 UPSTREAM_CLUSTER_DIR          ?= ../getup-cluster-$(FLAVOR)/
 UPSTREAM_EXAMPLES_COMMON_DIR  ?= ../getup-modules/examples/common
