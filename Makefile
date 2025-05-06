@@ -1,8 +1,3 @@
-#
-# You can use this Makefile to create resources using the modules from this repo.
-# This is a suggestion, not a requirement.
-#
-
 include Makefile.conf
 
 # General variables
@@ -21,11 +16,10 @@ OUTPUT_OVERLAY_JSON := .overlay.output.json
 TFVARS_OVERLAY_JSON := .overlay.tfvars.json
 ROOT_DIR            := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
-
 UPSTREAM_CLUSTER_DIR          ?= ../getup-cluster-$(FLAVOR)/
 UPSTREAM_EXAMPLES_COMMON_DIR  ?= ../getup-modules/examples/common
 UPSTREAM_EXAMPLES_CLUSTER_DIR ?= ../getup-modules/examples/$(FLAVOR)
-UPDATE_CLUSTER_FILES          := Makefile bin cluster/base/* *.tf *.example
+UPDATE_CLUSTER_FILES          := Makefile bin cluster/base/* $(MODULES:=.tf) $(MODULES:=*.example)
 UPDATE_EXAMPLES_CLUSTER_FILES := *.tf *.example */*.tf */*.example
 UPDATE_EXAMPLES_COMMON_FILES  := *.tf *.example
 

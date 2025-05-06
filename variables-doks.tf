@@ -107,7 +107,7 @@ variable "default_node_pool" {
     tags       = []
 
     labels = {
-      "role-role.getup.io/infra" : ""
+      "node-role.getup.io/infra" : ""
       "role" : "infra"
     }
 
@@ -134,7 +134,7 @@ variable "node_pools" {
       tags       = []
 
       labels = {
-        "role-role.getup.io/app" : ""
+        "node-role.getup.io/app" : ""
         "role" : "app"
       }
 

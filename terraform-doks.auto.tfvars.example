@@ -80,8 +80,8 @@
 # Default: {
 #  "auto_scale": false,
 #  "labels": {
-#    "role": "infra",
-#    "role-role.getup.io/infra": ""
+#    "node-role.getup.io/infra": "",
+#    "role": "infra"
 #  },
 #  "max_nodes": 2,
 #  "min_nodes": 2,
@@ -100,8 +100,8 @@
 #default_node_pool = {
 #  "auto_scale": false,
 #  "labels": {
-#    "role": "infra",
-#    "role-role.getup.io/infra": ""
+#    "node-role.getup.io/infra": "",
+#    "role": "infra"
 #  },
 #  "max_nodes": 2,
 #  "min_nodes": 2,
@@ -124,8 +124,8 @@
 #  {
 #    "auto_scale": true,
 #    "labels": {
-#      "role": "app",
-#      "role-role.getup.io/app": ""
+#      "node-role.getup.io/app": "",
+#      "role": "app"
 #    },
 #    "max_nodes": 4,
 #    "min_nodes": 2,
@@ -140,8 +140,8 @@
 #  {
 #    "auto_scale": true,
 #    "labels": {
-#      "role": "app",
-#      "role-role.getup.io/app": ""
+#      "node-role.getup.io/app": "",
+#      "role": "app"
 #    },
 #    "max_nodes": 4,
 #    "min_nodes": 2,
