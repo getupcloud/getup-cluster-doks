@@ -9,7 +9,10 @@ spec:
       storage:
         type: s3
         s3:
+          endpoint: #output:https://{region}.digitaloceanspaces.com
           region: #output:{region}
+          accessKeyId: #output:{loki_access_key}
+          secretAccessKey: #output:{loki_secret_key}
         bucketNames:
           chunks: #output:{loki_bucket_name}
           ruler: #output:{loki_bucket_name}
