@@ -146,7 +146,6 @@ spec:
       - key: dedicated
         value: infra
         effect: NoSchedule
-                - infra
 
     backend:
       replicas: 2
@@ -181,7 +180,6 @@ spec:
       - key: dedicated
         value: infra
         effect: NoSchedule
-                - infra
 
     loki:
       auth_enabled: false
