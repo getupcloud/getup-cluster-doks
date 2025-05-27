@@ -1,31 +1,29 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: teleport-agent
+  name: vap
   namespace: flux-system
 spec:
   chart:
     spec:
-      chart: teleport-kube-agent
-      version: 14.3.4
+      chart: vap
       sourceRef:
         kind: HelmRepository
-        name: teleport
+        name: getupcloud
+      version: "~> 0"
   install:
     createNamespace: true
-    disableWait: true
+    disableWait: false
     remediation:
       retries: -1
   upgrade:
     disableWait: false
     remediation:
       retries: -1
-  interval: 10m
-  releaseName: teleport-agent
-  storageNamespace: getup
-  targetNamespace: getup
+  interval: 5m
+  storageNamespace: vap-system
+  targetNamespace: vap-system
+  releaseName: vap
   values:
-    proxyAddr: getup.teleport.sh:443
-
-    podSecurityPolicy:
-      enabled: false
+    enforce: false
+    defaultFailurePolicy: Ignore #Ignore|Fail

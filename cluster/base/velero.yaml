@@ -18,8 +18,8 @@ spec:
     remediation:
       retries: -1
   upgrade:
-    disableWait: false
     crds: CreateReplace
+    disableWait: false
     remediation:
       retries: -1
   interval: 5m
