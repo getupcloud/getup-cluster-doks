@@ -1,0 +1,23 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ingress-nginx
+  namespace: flux-system
+spec:
+  values:
+    controller:
+
+      config:
+        #use-proxy-protocol: "true"
+
+      service:
+        enabled: true
+        type: LoadBalancer
+        #loadBalancerIP: 1.1.1.1
+
+        annotations:
+          # Reference: https://github.com/digitalocean/digitalocean-cloud-controller-manager/blob/master/docs/controllers/services/annotations.md
+          #kubernetes.digitalocean.com/load-balancer-id: "your-load-balancer-id"
+          #service.beta.kubernetes.io/do-loadbalancer-size-unit: "2"
+          #service.beta.kubernetes.io/do-loadbalancer-deny-rules: "cidr:198.51.100.0/16"
+          #service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"

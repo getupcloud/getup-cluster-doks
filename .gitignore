@@ -11,3 +11,4 @@
 terraform.log
 .kubeconfig
 .kustomize_build.yaml
+values.yaml

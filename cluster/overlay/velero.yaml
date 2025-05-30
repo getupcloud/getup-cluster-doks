@@ -18,9 +18,6 @@ spec:
         name: plugins
 
     configuration:
-      extraEnvVars:
-        DIGITALOCEAN_TOKEN: #output:{overlay["velero_do_token"]}
-
       defaultBackupStorageLocation:
       - aws: default
       backupStorageLocation:
@@ -41,8 +38,13 @@ spec:
           region: #output:{region}
 
     credentials:
+      useSecret: true
       secretContents:
         cloud: |+
           [default]
           aws_access_key_id=#output:{velero_access_key}
           aws_secret_access_key=#output:{velero_secret_key}
+
+      extraEnvVars:
+        DIGITALOCEAN_TOKEN: #output:{overlay["velero_do_token"]}
+
