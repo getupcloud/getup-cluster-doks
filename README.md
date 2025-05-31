@@ -14,6 +14,32 @@ curl -OLs https://github.com/getupcloud/getup-cluster-doks/raw/main/create-clust
 bash ./create-cluster.sh
 ```
 
+## Install gitleak to prevent any secret to be commited to local repo
+
+Download `gitleaks` from https://github.com/gitleaks/gitleaks/releases/tag/v8.26.0 and put in your $PATH:
+
+```
+curl -L https://github.com/gitleaks/gitleaks/releases/download/v8.26.0/gitleaks_8.26.0_linux_x64.tar.gz \
+  | tar xzvf - gitleaks
+sudo mv gitleaks /usr/local/bin
+```
+
+Add it to your local repo's pre-commit hook:
+
+```
+mv bin/pre-commit > .git/hooks/pre-commit
+git config hooks.gitleaks true
+```
+
+To ignore specific files from being reported as leaks, and the filename under `path` in file `.gitleaks.toml`.
+
+You can also run it with the following command to scan the local dir and git repo:
+
+```
+gitleaks dir --redact=75 --max-decode-depth 5 --no-banner
+gitleaks git --redact=75 --max-decode-depth 5 --no-banner
+```
+
 ## Create terraform state bucket
 
 If you do not already have a bucket to store terraform state, create one using the command below:
@@ -37,6 +63,7 @@ s3cmd --configure
 ###
 
 s3cmd mb s3://CUSTOMER-terraform-state                                                                  <<-- change for desired bucket name
+```
 
 ## Setup terraform state backend
 

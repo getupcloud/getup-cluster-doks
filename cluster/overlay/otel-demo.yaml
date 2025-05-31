@@ -8,7 +8,7 @@ spec:
     literal-ingress:
       spec:
         rules:
-        - host: app.pontta.com
+        - host: otel-demo.example.com
           http:
             paths:
             - backend:
