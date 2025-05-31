@@ -27,6 +27,9 @@ variable "overlay" {
   description = "Map of variables to inject into overlay files."
   type        = map(string)
   default = {
+    default_storage_class_name : ""
+    default_ingress_class_name : ""
+    default_ingresss_domain : ""
     certmanager_acme_email : ""
     cronitor_ping_url : ""
     ecr_credential_sync_region : ""
@@ -37,6 +40,7 @@ variable "overlay" {
     slack_channel : ""
     teleport_auth_token : ""
     datadog_api_key : ""
+    aws_efs_filesystem_id : ""
   }
 }
 

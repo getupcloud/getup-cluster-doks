@@ -1,0 +1,6 @@
+modules:
+- doks
+- flux
+- flux
+- tempo
+- velero
