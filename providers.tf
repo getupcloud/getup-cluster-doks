@@ -3,30 +3,30 @@ provider "digitalocean" {
 }
 
 provider "kubernetes" {
-  host                   = module.doks.kubeconfig.host
-  cluster_ca_certificate = base64decode(module.doks.kubeconfig.cluster_ca_certificate)
-  token                  = module.doks.kubeconfig.token
-  client_certificate     = module.doks.kubeconfig.client_certificate
-  client_key             = module.doks.kubeconfig.client_key
+  host                   = module.doks.doks_kubeconfig.host
+  cluster_ca_certificate = base64decode(module.doks.doks_kubeconfig.cluster_ca_certificate)
+  token                  = module.doks.doks_kubeconfig.token
+  client_certificate     = module.doks.doks_kubeconfig.client_certificate
+  client_key             = module.doks.doks_kubeconfig.client_key
 }
 
 provider "helm" {
   kubernetes {
-    host                   = module.doks.kubeconfig.host
-    cluster_ca_certificate = base64decode(module.doks.kubeconfig.cluster_ca_certificate)
-    token                  = module.doks.kubeconfig.token
-    client_certificate     = module.doks.kubeconfig.client_certificate
-    client_key             = module.doks.kubeconfig.client_key
+    host                   = module.doks.doks_kubeconfig.host
+    cluster_ca_certificate = base64decode(module.doks.doks_kubeconfig.cluster_ca_certificate)
+    token                  = module.doks.doks_kubeconfig.token
+    client_certificate     = module.doks.doks_kubeconfig.client_certificate
+    client_key             = module.doks.doks_kubeconfig.client_key
   }
 }
 
 provider "flux" {
   kubernetes = {
-    host                   = module.doks.kubeconfig.host
-    cluster_ca_certificate = base64decode(module.doks.kubeconfig.cluster_ca_certificate)
-    token                  = module.doks.kubeconfig.token
-    client_certificate     = module.doks.kubeconfig.client_certificate
-    client_key             = module.doks.kubeconfig.client_key
+    host                   = module.doks.doks_kubeconfig.host
+    cluster_ca_certificate = base64decode(module.doks.doks_kubeconfig.cluster_ca_certificate)
+    token                  = module.doks.doks_kubeconfig.token
+    client_certificate     = module.doks.doks_kubeconfig.client_certificate
+    client_key             = module.doks.doks_kubeconfig.client_key
   }
 
   git = {
