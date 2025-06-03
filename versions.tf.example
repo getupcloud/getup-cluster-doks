@@ -43,6 +43,7 @@ terraform {
     bucket = "-- DEFINE BUCKET NAME HERE --"
     key    = "-- DEFINE KEY PREFIX HERE --/terraform.tfstate"
 
+    ####### DO NOT CHANGE VALUES BELOW #######
     # Deactivate a few AWS-specific checks
     skip_credentials_validation = true
     skip_requesting_account_id  = true
@@ -50,6 +51,7 @@ terraform {
     skip_region_validation      = true
     skip_s3_checksum            = true
     region                      = "us-east-1"
+    ####### DO NOT CHANGE VALUES ABOVE #######
   }
 
   required_providers {

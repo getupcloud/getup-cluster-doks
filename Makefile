@@ -76,7 +76,7 @@ all help:
 #
 # Top-level targets
 #
-.PHONY: $(FLOW_FULL_RECONCILE) upgrade migrate-state
+.PHONY: $(FLOW_FULL_RECONCILE) migrate-state
 
 reconcile: $(FLOW_RECONCILE)
 
