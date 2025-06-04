@@ -110,7 +110,18 @@ versions.tf: versions.tf.example
 	tput sgr0
 	exit 2
 
-init: versions.tf validate-vars
+.git/hooks/pre-commit: bin/pre-commit
+	@ln -sf ../../$< $@
+	git config hooks.gitleaks true
+	if ! which gitleaks &>/dev/null; then
+		echo "Please install 'gitleaks' from https://github.com/gitleaks/gitleaks first."
+		echo "Alternativelly, use the target 'init-unsafe'"
+		exit 2
+	fi
+
+init: .git/hooks/pre-commit versions.tf validate-vars init-unsafe
+
+init-unsafe: versions.tf validate-vars
 	$(TERRAFORM) init $(TERRAFORM_ARGS) $(TERRAFORM_INIT_ARGS)
 
 init-upgrade: validate-vars
@@ -236,7 +247,7 @@ flux-res-ks fresks:
 # Used only to update upstream cluster repo, not to be meant to be used by end-users.
 #
 
-.PHONY: update-% upgrade-%
+.PHONY: update-%
 update-version:
 	latest=$$(timeout 3 curl -s https://raw.githubusercontent.com/getupcloud/getup-modules/main/version.txt || echo 0.0.0)
 	read -e -p "New module version: " -i "$$latest" v || read -e -p "New module version: [latest=$$latest]: " v
@@ -259,7 +270,7 @@ update-terraform: from ?= $(UPSTREAM_CLUSTER_DIR)
 update-terraform: update-common
 	@echo 'Checking terraform files'
 	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %f' --relative --ignore-missing-args \
-		$(MODULES_TF) $(ROOT_DIR)
+		$(MODULES_TF) $(COMMONS_TF) $(ROOT_DIR)
 
 update-manifests: from ?= $(UPSTREAM_CLUSTER_DIR)
 update-manifests: update-common
@@ -278,24 +289,6 @@ update-overlay-meld:
 	$(foreach source,$(MANIFESTS_OVERLAY),meld --newtab $(source) $(UPSTREAM_CLUSTER_DIR)/$(source) || true;)
 
 ########################################################
-
-# TO REMOVE ASAP
-#
-## copy files from modules defined in modules.yaml
-#update-from-local-cluster: from   ?= $(UPSTREAM_CLUSTER_DIR)
-#update-from-local-cluster: locals  = $(wildcard $(addprefix $(UPSTREAM_CLUSTER_DIR)/,$(UPDATE_CLUSTER_FILES)))
-#update-from-local-cluster: is-tree-clean
-#	@shopt -s nullglob
-#	echo Updating local files only from $(from):
-#	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %f' --relative --ignore-missing-args $(locals) $(ROOT_DIR)
-#
-## copy all existing files from source
-#upgrade-from-local-cluster: from ?= $(UPSTREAM_CLUSTER_DIR)
-#upgrade-from-local-cluster: is-tree-clean
-#	@shopt -s nullglob
-#	echo Updating all files from $(from):
-#	cd $(from) && rsync -av --omit-dir-times --info=all0,name1 --out-format='--> %f' --relative $(UPDATE_CLUSTER_FILES) $(ROOT_DIR)
-#
 
 #
 # Delete resources and cluster
