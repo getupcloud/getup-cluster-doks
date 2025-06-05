@@ -8,7 +8,11 @@ spec:
     controller:
 
       config:
-        #use-proxy-protocol: "true"
+        use-proxy-protocol: "false"
+
+      extraArgs:
+        enable-ssl-passthrough: "false"
+        #default-ssl-certificate: ingress-nginx/default-ssl-certificate ## <namespace>/<secret_name
 
       service:
         enabled: true
